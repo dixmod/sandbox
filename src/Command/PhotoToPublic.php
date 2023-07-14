@@ -33,7 +33,7 @@ class PhotoToPublic extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($this->storagePhoto->getPrivatePhoto() as $photo) {
+        foreach ($this->storagePhoto->getUserPhoto() as $photo) {
             $output->writeln(
                 $photo->getFileName() . "\t" .
                 $photo->getDateTimeOriginal()->format('Y-m-d')

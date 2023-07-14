@@ -27,7 +27,7 @@ class StoragePhoto
     /**
      * @return Generator|PhotoInfoDto
      */
-    public function getPrivatePhoto(): Generator
+    public function getUserPhoto(): Generator
     {
         foreach ($this->privatePath as $path) {
             foreach ($this->scanDir($path) as $photo) {
