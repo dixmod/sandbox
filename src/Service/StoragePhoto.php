@@ -9,7 +9,6 @@ use App\Exception\DateTimeException;
 use App\Exception\UnexpectedException;
 use App\Factory\PhotoInfoFactory;
 use Exception;
-use Generator;
 
 class StoragePhoto
 {
@@ -25,9 +24,9 @@ class StoragePhoto
     }
 
     /**
-     * @return Generator<PhotoInfoDto>
+     * @return PhotoInfoDto[]
      */
-    public function getUserPhoto(): Generator
+    public function getUserPhoto(): iterable
     {
         foreach ($this->privatePath as $path) {
             foreach ($this->scanDir($path) as $photo) {
@@ -40,9 +39,9 @@ class StoragePhoto
 
     /**
      * @param string $path
-     * @return Generator<PhotoInfoDto>
+     * @return PhotoInfoDto[]
      */
-    private function scanDir(string $path): Generator
+    private function scanDir(string $path): iterable
     {
         $subFiles = $this->getDirContent($path);
 

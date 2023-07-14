@@ -26,6 +26,11 @@ class PhotoInfoDto
         return $this->fileName;
     }
 
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
     public function getDateTimeOriginal(): DateTimeImmutable
     {
         return $this->dateTimeOriginal;
