@@ -11,11 +11,13 @@ use DateTimeImmutable;
 class PhotoInfoDto
 {
     private string $fileName;
+    private string $path;
     private DateTimeImmutable $dateTimeOriginal;
 
-    public function __construct(string $fileName, DateTimeImmutable $dateTimeOriginal)
+    public function __construct(string $fileName, string $path, DateTimeImmutable $dateTimeOriginal)
     {
         $this->fileName = $fileName;
+        $this->path = $path;
         $this->dateTimeOriginal = $dateTimeOriginal;
     }
 

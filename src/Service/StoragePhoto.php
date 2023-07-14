@@ -77,18 +77,19 @@ class StoragePhoto
     }
 
     /**
-     * @param string $file
+     * @param string $pathFile
      * @return PhotoInfoDto
-     * @throws UnexpectedException
      * @throws DateTimeException
+     * @throws UnexpectedException
      */
-    private function getPhotoInfo(string $file): PhotoInfoDto
+    private function getPhotoInfo(string $pathFile): PhotoInfoDto
     {
-        $infoPhoto = @exif_read_data($file);
+        $infoPhoto = @exif_read_data($pathFile);
+
         if (false === $infoPhoto) {
-            throw new UnexpectedException('Error photo info ' . $file);
+            throw new UnexpectedException('Error photo info ' . $pathFile);
         }
 
-        return PhotoInfoFactory::create($infoPhoto);
+        return PhotoInfoFactory::create($infoPhoto, $pathFile);
     }
 }

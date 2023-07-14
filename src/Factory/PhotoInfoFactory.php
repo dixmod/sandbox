@@ -13,14 +13,16 @@ class PhotoInfoFactory
 {
     /**
      * @param array<string, string> $dataPhoto
+     * @param string $pathFile
      * @return PhotoInfoDto
      * @throws DateTimeException
      */
-    public static function create(array $dataPhoto): PhotoInfoDto
+    public static function create(array $dataPhoto, string $pathFile): PhotoInfoDto
     {
         try {
             return new PhotoInfoDto(
                 $dataPhoto['FileName'],
+                $pathFile,
                 new DateTimeImmutable($dataPhoto['DateTimeOriginal'])
             );
         } catch (Exception $exception) {
