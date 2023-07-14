@@ -12,6 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PhotoToPublic extends Command
 {
     private StoragePhoto $storagePhoto;
+    protected static $defaultName = 'sandbox:photos-to-public';
+    protected static $defaultDescription = 'Moving user photo to public folder by date';
 
     public function __construct(StoragePhoto $storagePhoto)
     {
@@ -23,10 +25,6 @@ class PhotoToPublic extends Command
     protected function configure(): void
     {
     }
-
-    protected static $defaultName = 'sandbox:photos-to-public';
-
-    protected static $defaultDescription = 'Moving user photo to public folder by date';
 
     /**
      * @param InputInterface $input
