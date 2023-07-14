@@ -16,13 +16,15 @@ class PhotoInfoFactory
      * @return PhotoInfoDto
      * @throws DateTimeException
      */
-    static function create(array $dataPhoto): PhotoInfoDto
+    public static function create(array $dataPhoto): PhotoInfoDto
     {
         try {
             return new PhotoInfoDto(
                 $dataPhoto['FileName'],
-                new DateTimeImmutable($dataPhoto['DateTimeOriginal']
-            ));
+                new DateTimeImmutable(
+                    $dataPhoto['DateTimeOriginal']
+                )
+            );
         } catch (Exception $exception) {
             throw new DateTimeException(DateTimeException::DEFAULT_MESSAGE, $exception);
         }

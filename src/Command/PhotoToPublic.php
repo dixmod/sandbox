@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Dto\PhotoInfoDto;
+use App\Exception\DateTimeException;
 use App\Service\StoragePhoto;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Command\Command;
@@ -40,23 +41,12 @@ class PhotoToPublic extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        try {
-            /** @var PhotoInfoDto $photo */
-            foreach ($this->storagePhoto->getPrivatePhoto() as $photo) {
-                echo $photo->getDateTimeOriginal()->format('Y-m-d') . PHP_EOL;
-            }
-//            foreach (self::PRIVATE_PATH as $path) {
-//                $this->scan($path);
-//            }
-        } catch (Exception $exception) {
-            return Command::FAILURE;
-
+        foreach ($this->storagePhoto->getPrivatePhoto() as $photo) {
+            echo $photo->getFileName() . "\t" .
+                $photo->getDateTimeOriginal()->format('Y-m-d') .
+                PHP_EOL;
         }
 
         return Command::SUCCESS;
     }
-
-
-//    private function convertTo
 }
-

@@ -6,7 +6,9 @@ namespace App\Service;
 
 use App\Dto\PhotoInfoDto;
 use App\Exception\DateTimeException;
+use App\Exception\UnexpectedException;
 use App\Factory\PhotoInfoFactory;
+use Exception;
 use Generator;
 
 class StoragePhoto
@@ -22,13 +24,24 @@ class StoragePhoto
         $this->exclusionDirName = $exclusionDirName;
     }
 
+    /**
+     * @return Generator|PhotoInfoDto
+     */
     public function getPrivatePhoto(): Generator
     {
         foreach ($this->privatePath as $path) {
-            return $this->scan($path);
+            foreach ($this->scan($path) as $photo) {
+                yield $photo;
+            }
         }
+
+        return null;
     }
 
+    /**
+     * @param string $path
+     * @return Generator|PhotoInfoDto
+     */
     private function scan(string $path): Generator
     {
         $subFiles = $this->getDirContent($path);
@@ -37,27 +50,45 @@ class StoragePhoto
             $pathFile = $path . DIRECTORY_SEPARATOR . $pathFile;
 
             if (is_file($pathFile) === true) {
-                yield $this->parsePhoto($pathFile);
+                try {
+                    yield $this->getPhotoInfo($pathFile);
+                } catch (Exception $exception) {
+                    // @todo loging
+                }
 
                 continue;
             }
 
-            //yield $this->scan($pathFile);
+            foreach ($this->scan($pathFile) as $photo) {
+                yield $photo;
+            }
         }
+
+        return null;
     }
 
+    /**
+     * @param string $path
+     * @return string[]
+     */
     private function getDirContent(string $path): array
     {
         return array_diff(scandir($path), $this->exclusionDirName);
     }
 
-    private function parsePhoto(string $file): PhotoInfoDto
+    /**
+     * @param string $file
+     * @return PhotoInfoDto
+     * @throws UnexpectedException
+     * @throws DateTimeException
+     */
+    private function getPhotoInfo(string $file): PhotoInfoDto
     {
-        try {
-            $infoPhoto = @exif_read_data($file);
-            return PhotoInfoFactory::create($infoPhoto);
-        } catch (DateTimeException $exception) {
-
+        $infoPhoto = @exif_read_data($file);
+        if (false === $infoPhoto) {
+            throw new UnexpectedException('Error photo info ' . $file);
         }
+
+        return PhotoInfoFactory::create($infoPhoto);
     }
 }
