@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Dto\PhotoInfoDto;
-use App\Exception\DateTimeException;
 use App\Service\StoragePhoto;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- *
- */
 class PhotoToPublic extends Command
 {
     private StoragePhoto $storagePhoto;
@@ -32,7 +26,7 @@ class PhotoToPublic extends Command
 
     protected static $defaultName = 'sandbox:photos-to-public';
 
-    protected static $defaultDescription = 'Moving user photo  to public folder';
+    protected static $defaultDescription = 'Moving user photo to public folder by date';
 
     /**
      * @param InputInterface $input
