@@ -21,9 +21,7 @@ class PhotoInfoFactory
         try {
             return new PhotoInfoDto(
                 $dataPhoto['FileName'],
-                new DateTimeImmutable(
-                    $dataPhoto['DateTimeOriginal']
-                )
+                new DateTimeImmutable($dataPhoto['DateTimeOriginal'])
             );
         } catch (Exception $exception) {
             throw new DateTimeException(DateTimeException::DEFAULT_MESSAGE, $exception);

@@ -30,7 +30,7 @@ class StoragePhoto
     public function getPrivatePhoto(): Generator
     {
         foreach ($this->privatePath as $path) {
-            foreach ($this->scan($path) as $photo) {
+            foreach ($this->scanDir($path) as $photo) {
                 yield $photo;
             }
         }
@@ -42,7 +42,7 @@ class StoragePhoto
      * @param string $path
      * @return Generator|PhotoInfoDto
      */
-    private function scan(string $path): Generator
+    private function scanDir(string $path): Generator
     {
         $subFiles = $this->getDirContent($path);
 
@@ -59,7 +59,7 @@ class StoragePhoto
                 continue;
             }
 
-            foreach ($this->scan($pathFile) as $photo) {
+            foreach ($this->scanDir($pathFile) as $photo) {
                 yield $photo;
             }
         }
