@@ -25,7 +25,7 @@ class StoragePhoto
     }
 
     /**
-     * @return Generator|PhotoInfoDto
+     * @return Generator<PhotoInfoDto>
      */
     public function getUserPhoto(): Generator
     {
@@ -40,7 +40,7 @@ class StoragePhoto
 
     /**
      * @param string $path
-     * @return Generator|PhotoInfoDto
+     * @return Generator<PhotoInfoDto>
      */
     private function scanDir(string $path): Generator
     {
