@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
+namespace App\Factory;
+
 use App\Dto\PhotoInfoDto;
 use App\Exception\DateTimeException;
+use DateTimeImmutable;
+use Exception;
 
 class PhotoInfoFactory
 {

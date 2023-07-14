@@ -20,17 +20,7 @@ class PhotoToPublic extends Command
 
     protected static $defaultName = 'sandbox:photos-to-public';
 
-    private const ROOT_PATH = '/var/services/homes/dixmod';
-
-    private const PRIVATE_PATH = [
-        self::ROOT_PATH . '/Photos/MobileBackup/dixmod/Imaging Edge Mobile',
-//        self::ROOT_PATH . '/Photos/MobileBackup/dixmod/DCIM/Imaging Edge Mobile/',
-    ];
-
-    private const PUBLIC_PATH = '/var/services/photo';
-    private const EXCLUSION_DIR_NAME = ['..', '.', '@eaDir'];
-
-    protected static $defaultDescription = 'Moving private photo user to public folder';
+    protected static $defaultDescription = 'Moving user photo  to public folder';
 
     /**
      * @param InputInterface $input
