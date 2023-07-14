@@ -20,6 +20,7 @@ class PhotoInfoFactory
     {
         try {
             return new PhotoInfoDto(
+                $dataPhoto['FileName'],
                 new DateTimeImmutable($dataPhoto['DateTimeOriginal']
             ));
         } catch (Exception $exception) {

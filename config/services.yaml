@@ -22,5 +22,6 @@ services:
 
     App\Service\StoragePhoto:
         arguments:
-            $privatePath: '%env(PRIVATE_PATH)%'
+            $privatePath: '%env(json:PRIVATE_PATH)%'
             $publicPath: '%env(PUBLIC_PATH)%'
+            $exclusionDirName: '%env(json:EXCLUSION_DIR_NAME)%'

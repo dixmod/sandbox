@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Dto\PhotoInfoDto;
+use App\Service\StoragePhoto;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,6 +16,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PhotoToPublic extends Command
 {
+    private StoragePhoto $storagePhoto;
+
+    public function __construct(StoragePhoto $storagePhoto)
+    {
+        parent::__construct();
+
+        $this->storagePhoto = $storagePhoto;
+    }
+
     protected function configure(): void
     {
     }
@@ -30,9 +41,13 @@ class PhotoToPublic extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            foreach (self::PRIVATE_PATH as $path) {
-                $this->scan($path);
+            /** @var PhotoInfoDto $photo */
+            foreach ($this->storagePhoto->getPrivatePhoto() as $photo) {
+                echo $photo->getDateTimeOriginal()->format('Y-m-d') . PHP_EOL;
             }
+//            foreach (self::PRIVATE_PATH as $path) {
+//                $this->scan($path);
+//            }
         } catch (Exception $exception) {
             return Command::FAILURE;
 
@@ -41,46 +56,6 @@ class PhotoToPublic extends Command
         return Command::SUCCESS;
     }
 
-    private function scan(string $path)
-    {
-        $subDirs = $this->getDirContent($path);
-
-        foreach ($subDirs as $subDir) {
-            $file = $path . '/' . $subDir;
-
-            if (is_file($file) === true) {
-                $this->parsePhoto($file);
-
-                continue;
-            }
-
-            $this->scan($file);
-        }
-    }
-
-    /**
-     * @param string $path
-     * @return string[]
-     */
-    private function getDirContent(string $path): array
-    {
-        return array_diff(
-            scandir($path),
-            self::EXCLUSION_DIR_NAME
-        );
-    }
-
-    private function parsePhoto(string $file)
-    {
-        try {
-            $infoPhoto = @exif_read_data($file);
-        }catch (Exception $exception){
-
-        }
-
-        echo $infoPhoto['DateTimeOriginal']. PHP_EOL;
-        exit();
-    }
 
 //    private function convertTo
 }
