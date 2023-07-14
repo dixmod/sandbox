@@ -36,9 +36,10 @@ class PhotoToPublic extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->storagePhoto->getPrivatePhoto() as $photo) {
-            echo $photo->getFileName() . "\t" .
-                $photo->getDateTimeOriginal()->format('Y-m-d') .
-                PHP_EOL;
+            $output->writeln(
+                $photo->getFileName() . "\t" .
+                $photo->getDateTimeOriginal()->format('Y-m-d')
+            );
         }
 
         return Command::SUCCESS;
