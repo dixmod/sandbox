@@ -9,18 +9,26 @@ use App\Exception\DateTimeException;
 use App\Exception\UnexpectedException;
 use App\Factory\PhotoInfoFactory;
 use Exception;
+use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ *
+ */
 class StoragePhoto
 {
     private array $privatePath;
     private string $publicPath;
     private array $exclusionDirName;
+    private Filesystem $filesystem;
+    private $folderCache = [];
 
-    public function __construct(array $privatePath, string $publicPath, array $exclusionDirName)
+    public function __construct(array $privatePath, string $publicPath, array $exclusionDirName, Filesystem $filesystem)
     {
         $this->privatePath = $privatePath;
         $this->publicPath = $publicPath;
         $this->exclusionDirName = $exclusionDirName;
+
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -35,6 +43,17 @@ class StoragePhoto
         }
 
         return null;
+    }
+
+    public function move(PhotoInfoDto $photo, string $folder): void
+    {
+        $folder = $this->publicPath . DIRECTORY_SEPARATOR . $folder;
+        $this->checkFolder($folder);
+
+        $this->filesystem->rename(
+            $photo->getPath(),
+            $folder . DIRECTORY_SEPARATOR . $photo->getFileName()
+        );
     }
 
     /**
@@ -90,5 +109,22 @@ class StoragePhoto
         }
 
         return PhotoInfoFactory::create($infoPhoto, $pathFile);
+    }
+
+    /**
+     * @param string $folder
+     * @return void
+     */
+    private function checkFolder(string $folder): void
+    {
+        if (isset($this->folderCache[$folder])) {
+            return;
+        }
+
+        if (!is_dir($folder)) {
+            $this->filesystem->mkdir($folder);
+        }
+
+        $this->folderCache[$folder] = true;
     }
 }
