@@ -41,11 +41,6 @@ class PhotoToPublic extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->storagePhoto->getUserPhoto() as $photo) {
-//            $output->writeln(
-//                $photo->getFileName() . "\t" .
-//                $this->pathPhotoGenerator->generator($photo)
-//            );
-
             $this->storagePhoto->move($photo, $this->pathPhotoGenerator->generator($photo));
         }
 

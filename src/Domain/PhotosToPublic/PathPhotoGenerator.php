@@ -6,6 +6,9 @@ namespace App\Domain\PhotosToPublic;
 
 use App\Dto\PhotoInfoDto;
 
+/**
+ *
+ */
 class PathPhotoGenerator
 {
     private const FORMAT = 'Y-m-d';
