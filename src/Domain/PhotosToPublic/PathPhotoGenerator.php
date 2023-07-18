@@ -11,7 +11,7 @@ use App\Dto\PhotoInfoDto;
  */
 class PathPhotoGenerator
 {
-    private const FORMAT = 'Y-m-d';
+    private const FORMAT = 'Y.m.d';
 
     /**
      * @param PhotoInfoDto $photo
