@@ -17,7 +17,7 @@ class PathPhotoGenerator
      * @param PhotoInfoDto $photo
      * @return string
      */
-    public function generator(PhotoInfoDto $photo): string
+    public function generate(PhotoInfoDto $photo): string
     {
         return $photo->getDateTimeOriginal()->format(self::FORMAT);
     }
