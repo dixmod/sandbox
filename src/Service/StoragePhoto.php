@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Dto\PhotoInfoDto;
 use App\Exception\DateTimeException;
+use App\Exception\FileAlreadyExistsException;
 use App\Exception\UnexpectedException;
 use App\Factory\PhotoInfoFactory;
 use Exception;
@@ -45,14 +46,29 @@ class StoragePhoto
         return null;
     }
 
+    /**
+     * @throws FileAlreadyExistsException
+     */
     public function move(PhotoInfoDto $photo, string $folder): void
     {
         $folder = $this->publicPath . DIRECTORY_SEPARATOR . $folder;
         $this->checkFolder($folder);
 
+        $target = $folder . DIRECTORY_SEPARATOR . $photo->getFileName();
+
+//        if(is_file($target)){
+//            throw new FileAlreadyExistsException();
+//        }
+
+        $index = 0;
+        while (is_file($target)) {
+            $fileInfo = pathinfo($target);
+            $target = $folder . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '-' . ++$index . '.' . $fileInfo['extension'];
+        }
+
         $this->filesystem->rename(
             $photo->getPath(),
-            $folder . DIRECTORY_SEPARATOR . $photo->getFileName()
+            $target
         );
     }
 
@@ -126,5 +142,18 @@ class StoragePhoto
         }
 
         $this->folderCache[$folder] = true;
+    }
+
+    /**
+     * @param string $target
+     * @return void
+     */
+    private function checkTarget(string $target)
+    {
+        if (is_file($target)) {
+
+        }
+
+        return false;
     }
 }

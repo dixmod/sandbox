@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Domain\PhotosToPublic\PathPhotoGenerator;
+use App\Exception\FileAlreadyExistsException;
 use App\Service\StoragePhoto;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,7 +44,15 @@ class PhotoToPublic extends Command
         foreach ($this->storagePhoto->getUserPhoto() as $photo) {
             $newPath = $this->pathPhotoGenerator->generate($photo);
 
-            $this->storagePhoto->move($photo, $newPath);
+            //
+
+            try {
+                $this->storagePhoto->move($photo, $newPath);
+            }catch (FileAlreadyExistsException $exception){
+
+            }
+
+
             $output->writeln($photo->getPath() . ' -> ' . $newPath);
         }
 
